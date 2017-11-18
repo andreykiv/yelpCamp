@@ -17,9 +17,11 @@ var commentRoutes    = require("./routes/comments"),
     indexRoutes      = require("./routes/index");
     
 mongoose.Promise = global.Promise; 
-mongoose.connect(process.env.DATABASEURL);
+var url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp_v12";
+mongoose.connect(url);
+
 // define a environment variable in terminal: export DATABASEURL=mongodb://localhost/yelp_camp_v12
-// after that set a variable in heroku of a database to be a url of mLab.
+// after that set a variable in heroku of a database to be a url of mLab. (inside setting-define a variable...)
 
 
 // mongoose.connect("mongodb://andreykiv:partos@ds113136.mlab.com:13136/yelp_camp");
