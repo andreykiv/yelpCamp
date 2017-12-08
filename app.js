@@ -34,6 +34,9 @@ app.use(methodOverride("_method"));
 app.use(flash());
 // seedDB();
 
+// Using momentJS to display when the post was created
+app.locals.moment = require("moment");
+
 // PASSPORT CONFIGURATION
 app.use(require("express-session")({
     secret: "Once again Rusty wins cutest dog!",
