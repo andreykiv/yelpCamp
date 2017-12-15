@@ -31,3 +31,7 @@
     height: 400px;
     width: 100%;
 }
+
+#elemAlign{
+    text-align: center;
+}
