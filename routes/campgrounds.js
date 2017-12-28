@@ -4,8 +4,23 @@ var Campground  = require("../models/campground");
 var middleware = require("../middleware");
 var geocoder = require('geocoder');
 
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
+
 // INDEX - show all campgrounds
 router.get("/", function(req, res){
+    if(req.query.search){
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    // GET ALL CAMPGROUNDS FROM DB
+        Campground.find({name: regex}, function(err, allCampgrounds){
+            if(err){
+                console.log(err);
+            } else {
+                res.render('campgrounds/index', {campgrounds: allCampgrounds});
+            }
+        });
+    } else {
         // GET ALL CAMPGROUNDS FROM DB
         Campground.find({}, function(err, allCampgrounds){
             if(err){
@@ -14,7 +29,8 @@ router.get("/", function(req, res){
                 res.render('campgrounds/index', {campgrounds: allCampgrounds});
             }
         });
-    });
+    }
+});
 
 
 //CREATE - add new campground to DB
@@ -26,7 +42,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
   var author = {
       id: req.user._id,
       username: req.user.username
-  }
+  };
   var cost = req.body.cost;
   geocoder.geocode(req.body.location, function (err, data) {
     var lat = data.results[0].geometry.location.lat;
@@ -105,6 +121,7 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
         }
     });
 });
+
 
 
 
